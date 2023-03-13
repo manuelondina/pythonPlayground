@@ -25,8 +25,6 @@ def count_words_pdf(pdf_file):
             count += len(text.split())
     return count
 
-
-
 def count_words_docx(docx_file):
     doc = docx.Document(docx_file)
     count = 0
