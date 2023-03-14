@@ -14,36 +14,44 @@ import docx
 import requests
 from io import BytesIO
 
+
 def count_words_pdf(pdf_file):
     with open(pdf_file, 'rb') as f:
         pdf_reader = PyPDF2.PdfReader(f)
         num_pages = len(pdf_reader.pages)
         count = 0
+        letter_count = 0
         for i in range(num_pages):
             page = pdf_reader.pages[i]
             text = page.extract_text()
             count += len(text.split())
-    return count
+            letter_count += len(text.replace(" ", ""))
+        return count, letter_count
+
 
 def count_words_docx(docx_file):
     doc = docx.Document(docx_file)
     count = 0
+    letter_count = 0
     for para in doc.paragraphs:
         count += len(para.text.split())
-    return count
+        letter_count += len(para.text.replace(" ", ""))
+    return count, letter_count
+
 
 def browse_file():
     filename = filedialog.askopenfilename()
     file_ext = filename.split(".")[-1]
     file_label.config(text=filename)
     if file_ext == "pdf":
-        word_count = count_words_pdf(filename)
-        word_count_label.config(text=f"Word Count: {word_count}")
+        word_count, letter_count = count_words_pdf(filename)
+        word_count_label.config(text=f"Word Count: {word_count}   Letter Count: {letter_count}")
     elif file_ext == "docx":
-        word_count = count_words_docx(filename)
-        word_count_label.config(text=f"Word Count: {word_count}")
+        word_count, letter_count = count_words_docx(filename)
+        word_count_label.config(text=f"Word Count: {word_count}   Letter Count: {letter_count}")
     else:
         word_count_label.config(text="File type not supported")
+
 
 root = tk.Tk()
 root.title("Word Count")
@@ -64,7 +72,7 @@ browse_button.pack(pady=10)
 file_label = tk.Label(root, text="No file selected.")
 file_label.pack()
 
-word_count_label = tk.Label(root, text="Word Count: 0")
+word_count_label = tk.Label(root, text="Word Count: 0   Letter Count: 0")
 word_count_label.pack(pady=10)
 
 root.mainloop()
