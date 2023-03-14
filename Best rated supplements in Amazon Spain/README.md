@@ -1,5 +1,5 @@
 ----------------------------------------
-Web scrapper for Amazon Spain
+Web scrapper for Amazon Spain || 
 In this example we check the "Best Supplements" by rating stars
 @author: Manuel Ondina
 @Date: March-2023		
